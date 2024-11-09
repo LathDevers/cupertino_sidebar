@@ -115,6 +115,8 @@ const kCupertinoSidebarCollapsibleCurve = Curves.fastEaseInToSlowEaseOut;
 
 /// A widget that applies a collapse effect to a [CupertinoSidebar].
 ///
+/// <img src="https://github.com/RoundedInfinity/cupertino_sidebar/blob/main/art/sidebar_demo.gif?raw=true" width="500">
+///
 /// See also:
 /// - [CupertinoSidebar] a iOS-style sidebar widget.
 /// - [CupertinoCollapsible] a widget that applies a collapse effect to a widget

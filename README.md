@@ -1,26 +1,26 @@
-# cupertino_sidebar
+# Cupertino Sidebar
 
-With **cupertino_sidebar** you can add iOS-style sidebars and floating tab bars to your app.
+**cupertino_sidebar** brings iOS-style sidebars and floating tab bars to Flutter, providing a sleek, native feel for iPadOS-style navigation in your app.
 
 ## Features
 
 ### Cupertino Sidebar
 
-![Cupertino Sidebar]()
+![Cupertino Sidebar](https://github.com/RoundedInfinity/cupertino_sidebar/blob/main/art/sidebar_demo.gif?raw=true)
 
 A iOS-style sidebar that can be used to navigate through your app.
 
 ### Cupertino Floating Tab Bar
 
-![Cupertino Floating Tab Bar]()
+![Cupertino Floating Tab Bar](https://github.com/RoundedInfinity/cupertino_sidebar/blob/main/art/tabbar.gif?raw=true)
 
 A iPadOS-style floating tab bar that can also be used to navigate through your app.
 
-## Usage
+## 📖 Usage
 
 ### Sidebar
 
-The CupertinoSidebar works very similar to Flutter's  [NavigationDrawer]([https://](https://api.flutter.dev/flutter/material/NavigationDrawer-class.html)). It takes a list of destinations, a selected index and a callback function that is called when a destination is tapped.
+The `CupertinoSidebar` works very similar to Flutter's  [NavigationDrawer]([https://](https://api.flutter.dev/flutter/material/NavigationDrawer-class.html)).  It accepts a list of destinations, a selected index, and a callback function triggered when a destination is tapped.
 
 ```dart
 CupertinoSidebar(
@@ -51,7 +51,7 @@ CupertinoSidebar(
 );
 ```
 
-The CupertinoSidebar also supports expandable sections to group the destinations.
+CupertinoSidebar also supports expandable sections, allowing you to group destinations.
 
 ```dart
 ...
@@ -64,16 +64,17 @@ children: [
           icon: Icon(CupertinoIcons.settings),
           label: Text('Settings'),
         ),
+        ...
       ],
     ),
 ]
 ```
 
-See the [full example]([https://](https://github.com/RoundedInfinity/cupertino_sidebar/blob/main/example/lib/main.dart)) for more details about CupertinoSidebar.
+For a full example, see the [Sidebar example](https://github.com/RoundedInfinity/cupertino_sidebar/blob/main/example/lib/main.dart).
 
 ### Floating Tab Bar
 
-The CupertinoFloatingTabBar is managed by a TabController. It takes a list of tabs and an optional callback function that is called when a destination is tapped.
+The `CupertinoFloatingTabBar` is managed by a TabController, with options to add tabs and specify a callback function.
 
 ```dart
 CupertinoFloatingTabBar(
@@ -93,14 +94,19 @@ CupertinoFloatingTabBar(
 )
 ```
 
-See the [full example]([https://](https://github.com/RoundedInfinity/cupertino_sidebar/blob/main/example/lib/tab_bar_example.dart)) for more details about CupertinoFloatingTabBar.
+For a full example, see the [Tab Bar example](https://github.com/RoundedInfinity/cupertino_sidebar/blob/main/example/lib/tab_bar_example.dart).
 
-### More examples
-- [Creating a collapsible sidebar]([https://](https://github.com/RoundedInfinity/cupertino_sidebar/blob/main/example/lib/collapsible_side_bar.dart))
+### Additional examples
 
-## TDB
+- [Creating a collapsible sidebar](https://github.com/RoundedInfinity/cupertino_sidebar/blob/main/example/lib/collapsible_side_bar.dart)
 
-This package is still under development. The following features are planned for the future:
+## 📅 Roadmap
+
+This package is actively being developed. Planned features include:
 
 - Tab bar to sidebar transition
-- **Adaptive scaffold** that switches between a sidebar and a floating tab bar and a bottom tab bar depending on the screen size
+- **Adaptive scaffold** that switches between a sidebar and a floating tab bar and a bottom tab bar depending on the screen size.
+
+## 🤝 Contributing
+
+Contributions are welcome! Feel free to submit issues, ideas, or pull requests. Together, we can make cupertino_sidebar even better!

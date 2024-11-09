@@ -11,21 +11,43 @@ const kFloatingTabBarPillColor = CupertinoDynamicColor.withBrightness(
   darkColor: Color.fromRGBO(255, 255, 255, 0.07),
 );
 
-/// A iPadOS-style floating tab bar.
+/// A floating tab bar for iPadOS-style navigation.
 ///
 /// A floating tab bar is a tab bar that is displayed near the top of the
 /// screen, above all other content.
 ///
 /// <img src="https://docs-assets.developer.apple.com/published/9b9a89b3054e378850b30d58483e6169/ipad-tab-bar-music-app@2x.png" width="500">
 ///
-/// The [tabs] are a list of typically [CupertinoFloatingTab]
-/// widgets to be displayed as the different tabs.
+/// The [CupertinoFloatingTabBar] displays a list of [tabs], usually
+/// consisting of [CupertinoFloatingTab] widgets that represent individual tabs.
 ///
-/// If a [TabController] is not provided, then a [DefaultTabController]
-/// ancestor must be provided instead.
+/// A [TabController] can be supplied to control the active tab; otherwise, the
+/// nearest [DefaultTabController] ancestor will be used.
 ///
 /// The tab controller's [TabController.length] must equal the
 /// length of the [tabs] length.
+///
+/// ### Example
+///
+/// A floating tab bar with three tabs, controlled by a [TabController].
+///
+/// ```dart
+/// CupertinoFloatingTabBar(
+///   onDestinationSelected: (value) {},
+///   controller: _myTabController,
+///   tabs: const [
+///     CupertinoFloatingTab(
+///       child: Text('Today'),
+///     ),
+///     CupertinoFloatingTab(
+///       child: Text('Library'),
+///     ),
+///     CupertinoFloatingTab.icon(
+///       icon: Icon(CupertinoIcons.search),
+///     ),
+///   ],
+/// )
+/// ```
 ///
 /// See also:
 /// - [CupertinoFloatingTab] a tab in the floating tab bar.
@@ -59,33 +81,34 @@ class CupertinoFloatingTabBar extends StatefulWidget {
   ///
   /// If [TabController] is not provided, then the value of
   /// [DefaultTabController.of] will be used.
+  ///
+  /// The controller's length must match the number of [tabs].
   final TabController? controller;
 
-  /// The background color of the floating tab bar.
+  /// Background color for the tab bar.
   ///
-  /// If this is null, then [CupertinoColors.tertiarySystemFill] is used.
-  ///
-  /// When [isVibrant] is true, the color is ignored and a [CupertinoMaterial]
-  /// is rendered instead.
+  /// Defaults to [CupertinoColors.tertiarySystemFill]. If [isVibrant] is true,
+  /// this color is ignored, and a vibrant effect is applied instead.
   final Color? backgroundColor;
 
-  /// Wether the floating tab bar has a vibrant appearance using a material
-  /// instead of a solid color.
+  /// Whether to apply a vibrant effect to the tab bar's background.
+  ///
+  /// If true, the tab bar renders with a frosted-glass appearance.
   final bool isVibrant;
 
-  /// The border radius of the floating tab bar.
+  /// Border radius of the tab bar.
   ///
-  /// Defaults to [BorderRadius.circular(9999)].
+  /// Defaults to a fully rounded shape, [BorderRadius.circular(9999)].
   final BorderRadiusGeometry borderRadius;
 
-  /// Called when one of the tabs is selected.
+  /// Called when a tab is selected.
   ///
-  /// This is called after any drag gesture has finished.
+  /// This callback is triggered after a drag gesture is complete.
   final ValueChanged<int>? onDestinationSelected;
 
-  /// The material style to use when [isVibrant] is true.
+  /// The material style to apply when [isVibrant] is true.
   ///
-  /// Uses [CupertinoMaterialStyle.thin] when null.
+  /// Defaults to [CupertinoMaterialStyle.thin].
   final CupertinoMaterialStyle? materialStyle;
 
   @override

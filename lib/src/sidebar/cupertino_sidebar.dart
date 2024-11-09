@@ -4,31 +4,26 @@ import 'package:flutter/cupertino.dart';
 
 /// A iOS-style sidebar.
 ///
-/// A sidebar appears on the leading side of a view and lets people
-/// navigate between sections in your app.
+/// The [CupertinoSidebar] provides a sidebar typically placed on the leading
+/// side of an app's interface, allowing users to navigate between different
+/// sections.
 ///
-/// <img src="https://docs-assets.developer.apple.com/published/0014d2d0207333d9624513167a69f2b2/ipad-sidebar-music-app@2x.png" width="500">
+/// <img alt="Example Sidebar" src="https://docs-assets.developer.apple.com/published/0014d2d0207333d9624513167a69f2b2/ipad-sidebar-music-app@2x.png" width="600">
 ///
-/// The [children] are a list of widgets to be displayed in the sidebar.
+/// The [children] property accepts a list of widgets, often including
+/// [SidebarDestination] widgets for individual destinations. When a
+/// [SidebarDestination] is selected, [onDestinationSelected] is triggered with
+/// the destination’s index, allowing for tracking the selected destination.
 ///
-/// These can be a mixture of any widgets,
-/// but there is special handling for [SidebarDestination]s.
-/// They are treated as a group and when one is selected,
-/// the [onDestinationSelected] is called with the index into the group that
-/// corresponds to the selected destination.
-///
-/// There can also be a combination of [SidebarSection]s and
-/// [SidebarSectionDestination]s to further group destinations.
+/// You can combine [SidebarDestination], [SidebarSection], and
+/// [SidebarSectionDestination] widgets to create a navigable structure.
 ///
 /// The indices of the destinations are always calculated from top to bottom.
 ///
-/// [navigationBar] is a sliver widget that is displayed at the top of the
-/// sidebar. Typically this is a [SidebarNavigationBar] widget.
-///
 /// ### Example
 ///
-/// This example shows a sidebar with 6 destinations, two of them are in a
-/// section.
+/// The following example creates a sidebar with six destinations, two of which
+/// are grouped in a section.
 /// `_selectedIndex` represents the index of the selected destination.
 ///
 /// ```dart
@@ -82,6 +77,15 @@ import 'package:flutter/cupertino.dart';
 /// );
 ///  ```
 ///
+/// You can find more information in the [full example](https://github.com/RoundedInfinity/cupertino_sidebar/blob/main/example/lib/main.dart).
+///
+/// ### Customization
+///
+/// - [navigationBar] can be added as a sliver widget at the top of the sidebar.
+///   Commonly a [SidebarNavigationBar] widget, it provides a header or toolbar.
+/// - [backgroundColor] and [border] can be used to style the sidebar.
+/// - [isVibrant] provides a material effect for a translucent appearance.
+///
 /// See also:
 /// - [SidebarDestination] one destination in the sidebar.
 /// - [SidebarSection] a section that groups destinations together.
@@ -102,59 +106,58 @@ class CupertinoSidebar extends StatefulWidget {
     this.materialStyle,
   });
 
-  /// The material style to use when [isVibrant] is true.
+  /// The material style applied when [isVibrant] is enabled.
   ///
-  /// Uses [CupertinoMaterialStyle.regular] when null.
+  /// Defaults to [CupertinoMaterialStyle.regular].
   final CupertinoMaterialStyle? materialStyle;
 
-  /// The navigation bar to display at the top of the sidebar.
+  /// A sliver widget displayed at the top of the sidebar.
   ///
-  /// Needs to be a **sliver** widget.
-  ///
-  /// Typically a [SidebarNavigationBar] widget.
+  /// Typically a [SidebarNavigationBar] for a consistent iOS navigation bar
+  /// appearance.
   final Widget? navigationBar;
 
-  /// The background color of the sidebar.
+  /// The sidebar's background color.
   ///
-  /// If this is null, then [CupertinoColors.systemBackground] is used.
-  ///
-  /// When [isVibrant] is true, the color is ignored and a [CupertinoMaterial]
-  /// is rendered instead.
+  /// Defaults to [CupertinoColors.systemBackground]. When [isVibrant]
+  /// is `true`, the background color is overridden with a translucent material.
   final Color? backgroundColor;
 
-  /// The border of the sidebar.
+  /// The border applied to the sidebar.
+  ///
+  /// If `null`, a default border appears on the right side.
   final Border? border;
 
   /// The maximum width of the sidebar.
   ///
-  /// Defaults to 320.
+  /// Defaults to 320 pixels.
   final double maxWidth;
 
-  /// The padding applied to [children].
+  /// Padding applied to [children].
   final EdgeInsets padding;
 
-  /// Defines the appearance of the items within the sidebar.
+  /// A list of widgets displayed within the sidebar.
   ///
-  /// The list contains may contain: [SidebarDestination], [SidebarSection],
-  /// [SidebarSectionDestination] and/or customized widgets.
+  /// Includes [SidebarDestination], [SidebarSection],
+  /// [SidebarSectionDestination], and custom widgets.
   final List<Widget> children;
 
   /// Wether the sidebar has a vibrant appearance using a material instead
   /// of a solid color.
+  ///
+  /// When `true`, [backgroundColor] is ignored, and the sidebar appears with
+  /// a vibrant material-style background.
   final bool isVibrant;
 
-  /// The index into destinations for the current selected
-  /// [SidebarDestination] or null if no destination is selected.
+  /// The index of the currently selected [SidebarDestination].
   ///
-  /// A valid [selectedIndex] satisfies 0 <= [selectedIndex] < number of
-  /// [SidebarDestination].
-  /// For an invalid [selectedIndex] like `-1`, all destinations will appear
-  /// unselected.
+  /// Must satisfy `0 <= selectedIndex < number of destinations` for valid
+  /// selection. An invalid index (e.g., `-1`) or `null` indicates no selection.
   final int? selectedIndex;
 
-  /// Called when one of the [SidebarDestination] children is selected.
+  /// Callback triggered when a [SidebarDestination] is selected.
   ///
-  /// This callback usually updates the int passed to [selectedIndex].
+  /// This should update [selectedIndex] to reflect the selection.
   ///
   /// Upon updating [selectedIndex], the [CupertinoSidebar] will be rebuilt.
   final ValueChanged<int>? onDestinationSelected;

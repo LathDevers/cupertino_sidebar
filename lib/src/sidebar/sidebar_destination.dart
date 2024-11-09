@@ -55,18 +55,38 @@ class CupertinoSidebarTextColor extends WidgetStateColor {
   }
 }
 
-/// A iOS-style [CupertinoSidebar] destination.
+/// A configurable, iOS-style destination for use within a [CupertinoSidebar].
 ///
-/// Displays an icon with a label, for use in [CupertinoSidebar.children].
+/// [SidebarDestination] displays an icon, label, optional subtitle, and
+/// optional trailing widget, representing an individual destination or
+/// navigation option in a [CupertinoSidebar].
 ///
-/// When placed inside a [CupertinoSidebar] and [onTap] and [isSelected] are
-/// not set, they will be set automatically based on the destination's index
-/// in the [CupertinoSidebar].
+/// When used within a [CupertinoSidebar], the [isSelected] and [onTap]
+/// properties will be automatically set based on the destination's position
+/// in the sidebar, if not explicitly provided.
+///
+///
+/// ### Example:
+/// ```dart
+/// CupertinoSidebar(
+///   children: [
+///     SidebarDestination(
+///       icon: Icon(CupertinoIcons.home),
+///       label: Text("Home"),
+///       onTap: () => print("Home tapped"),
+///     ),
+///     SidebarDestination(
+///       icon: Icon(CupertinoIcons.settings),
+///       label: Text("Settings"),
+///     ),
+///   ],
+/// )
+/// ```
 ///
 /// See also:
-/// - [SidebarSection] used to group destinations together.
-/// - [SidebarSectionDestination] used to group destinations together,
-///  but also acts as a destination itself.
+/// - [SidebarSection], for grouping destinations.
+/// - [SidebarSectionDestination], which can serve as both a group header and a
+///   selectable destination.
 class SidebarDestination extends StatelessWidget {
   /// Creates a iOS-style [SidebarDestination].
   const SidebarDestination({
@@ -80,16 +100,18 @@ class SidebarDestination extends StatelessWidget {
     this.onTap,
   });
 
-  /// Whether this destination is selected.
+  /// Indicates whether this destination is selected.
   ///
-  /// If this is null, [isSelected] will be set automatically based on the
+  /// If [isSelected] is `null`, selection state will be determined by the
   /// destination's index in the [CupertinoSidebar].
   final bool? isSelected;
 
   /// The icon to display before the label.
   final Widget? icon;
 
-  /// The icon to display before the label when this destination is selected.
+  /// The icon displayed before the label when the destination is selected.
+  ///
+  /// If [selectedIcon] is `null`, [icon] will be used for both states.
   final Widget? selectedIcon;
 
   /// The label to display.
@@ -97,26 +119,28 @@ class SidebarDestination extends StatelessWidget {
   /// Typically a [Text].
   final Widget label;
 
-  /// The subtitle to display below the label.
+  /// An optional subtitle displayed below the [label].
   ///
   /// Typically a [Text].
   final Widget? subtitle;
 
-  /// Called when the destination is tapped.
+  /// The callback invoked when the destination is tapped.
   ///
-  /// If this is null, [onTap] will be set automatically based on the
-  /// destination's index in the [CupertinoSidebar].
+  /// If [onTap] is `null`, it will default to a callback provided by the
+  /// enclosing [CupertinoSidebar], if available.
   final void Function()? onTap;
 
-  /// The widget to display after the label.
+  /// An optional widget displayed after the label.
   ///
-  /// Typically a [Text] or [Icon].
+  /// This can be used to display an icon or other supplementary information
   final Widget? trailing;
 
   @override
   Widget build(BuildContext context) {
     final info = CupertinoDestinationInfo.maybeOf(context);
 
+    // Determine selection state, prioritizing explicit [isSelected] or sidebar
+    // context.
     final selectedState = <WidgetState>{
       if ((isSelected ?? false) || (info?.isSelected ?? false))
         WidgetState.selected,
@@ -126,6 +150,7 @@ class SidebarDestination extends StatelessWidget {
 
     final primary = CupertinoTheme.of(context).primaryColor;
 
+    // Display the appropriate icon based on the selection state.
     final effectiveIcon = selected() ? selectedIcon ?? icon : icon;
 
     final typography = CupertinoTheme.of(context).textTheme;
@@ -150,8 +175,9 @@ class SidebarDestination extends StatelessWidget {
     final effectiveBackgroundColor =
         CupertinoSidebarFillColor(context).resolve(selectedState);
 
-    final localizations = CupertinoLocalizations.of(context);
+    // Accessibility label for screen readers.
 
+    final localizations = CupertinoLocalizations.of(context);
     final semanticsLabel = info != null
         ? localizations.tabSemanticsLabel(
             tabIndex: info.index + 1,
@@ -205,7 +231,7 @@ class SidebarDestination extends StatelessWidget {
                         style: effectiveTextStyle,
                         child: label,
                       ),
-                      //TODO: fix padding for subtitle.
+                      // TODO: Adjust padding if needed for subtitle alignment.
                       DefaultTextStyle(
                         style: effectiveSubtitleTextStyle,
                         child: subtitle!,

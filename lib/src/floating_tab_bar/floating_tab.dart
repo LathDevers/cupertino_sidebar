@@ -29,23 +29,40 @@ class CupertinoFloatingTabBarColor extends WidgetStateColor {
   }
 }
 
-/// A iPadOS-style [CupertinoFloatingTabBar] tab.
+/// A tab for use in a [CupertinoFloatingTabBar].
 ///
-/// When [isSelected] is not set, the selection state is determined by the
-/// [CupertinoFloatingTabBar] that contains this tab.
+/// This widget represents a single tab in an iPadOS-style floating tab bar,
+/// optionally displaying an icon or text, and indicating the selection state
+/// through its styling.
+///
+/// When [isSelected] is not provided, the tab selection state is determined by
+/// the [CupertinoFloatingTabBar] that contains this tab.
+///
+/// ## Example
+/// ```dart
+/// CupertinoFloatingTabBar(
+///   controller: _myTabController,
+///   tabs: const [
+///     CupertinoFloatingTab(child: Text('Home')),
+///     CupertinoFloatingTab(child: Text('Library')),
+///     CupertinoFloatingTab.icon(icon: Icon(CupertinoIcons.search)),
+///   ],
+/// );
+/// ```
+///
 class CupertinoFloatingTab extends StatelessWidget {
-  /// Creates a [CupertinoFloatingTab].
+  /// Creates a [CupertinoFloatingTab] displaying [child], typically a
+  /// text widget.
   ///
-  /// When [isSelected] is not set, the selection state is determined by the
-  /// [CupertinoFloatingTabBar] that contains this tab.
+  /// When [isSelected] is not provided, selection is managed by the parent
+  /// [CupertinoFloatingTabBar].
   const CupertinoFloatingTab({
     required this.child,
     super.key,
     this.isSelected,
   }) : _isIcon = false;
 
-  /// Creates a [CupertinoFloatingTab] with an icon instead
-  /// of a text.
+  /// Creates a [CupertinoFloatingTab] with an icon instead of text.
   const CupertinoFloatingTab.icon({
     required Widget icon,
     super.key,
@@ -60,10 +77,10 @@ class CupertinoFloatingTab extends StatelessWidget {
 
   final bool _isIcon;
 
-  /// Whether the tab is highlighted as selected.
+  /// Indicates whether this tab is selected.
   ///
-  /// When not set, the selection state is determined by the nearest
-  /// [CupertinoFloatingTabBar] that contains this tab.
+  /// When null, the tab selection state is managed by the parent
+  /// [CupertinoFloatingTabBar].
   final bool? isSelected;
 
   @override
