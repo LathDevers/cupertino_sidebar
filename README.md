@@ -20,7 +20,7 @@ A iPadOS-style floating tab bar that can also be used to navigate through your a
 
 ### Sidebar
 
-The `CupertinoSidebar` works very similar to Flutter's  [NavigationDrawer]([https://](https://api.flutter.dev/flutter/material/NavigationDrawer-class.html)).  It accepts a list of destinations, a selected index, and a callback function triggered when a destination is tapped.
+The `CupertinoSidebar` works very similar to Flutter's [NavigationDrawer](https://api.flutter.dev/flutter/material/NavigationDrawer-class.html). It accepts a list of destinations, a selected index, and a callback function triggered when a destination is tapped.
 
 ```dart
 CupertinoSidebar(

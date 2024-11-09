@@ -1,6 +1,6 @@
 name: cupertino_sidebar
-description: "Brings iOS-style sidebars and floating tab bars to Flutter."
-version: 1.0.0
+description: "Brings iOS-style sidebars and floating tab bars to Flutter, providing a sleek, native feel for iPadOS-style navigation in your app."
+version: 1.0.1
 repository: https://github.com/RoundedInfinity/cupertino_sidebar
 
 screenshots:
