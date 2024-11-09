@@ -42,6 +42,7 @@ class _TabBarExampleState extends State<TabBarExample> {
                 child: Builder(
                   builder: (context) {
                     return CupertinoFloatingTabBar(
+                      // Use a material instead of a static color. This creates a blur effect behind the bar.
                       isVibrant: true,
                       onDestinationSelected: (value) {
                         // Update the selected index.

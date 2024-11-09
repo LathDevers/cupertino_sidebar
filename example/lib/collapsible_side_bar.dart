@@ -3,15 +3,15 @@ import 'package:example/pages.dart';
 import 'package:flutter/cupertino.dart';
 
 /// This example shows how to use the [CupertinoSidebar] and [CupertinoSidebarCollapsible].
-class CollapsibleTabBarExample extends StatefulWidget {
-  const CollapsibleTabBarExample({super.key});
+class CollapsibleSidebarExample extends StatefulWidget {
+  const CollapsibleSidebarExample({super.key});
 
   @override
-  State<CollapsibleTabBarExample> createState() =>
-      _CollapsibleTabBarExampleState();
+  State<CollapsibleSidebarExample> createState() =>
+      _CollapsibleSidebarExampleState();
 }
 
-class _CollapsibleTabBarExampleState extends State<CollapsibleTabBarExample> {
+class _CollapsibleSidebarExampleState extends State<CollapsibleSidebarExample> {
   final _pages = const [
     FirstDemoPage(),
     SecondDemoPage(),
