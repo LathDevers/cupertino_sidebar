@@ -1,7 +1,17 @@
 name: cupertino_sidebar
-description: "A new Flutter package project."
+description: "Brings iOS-style sidebars and floating tab bars to Flutter."
 version: 1.0.0
 repository: https://github.com/RoundedInfinity/cupertino_sidebar
+
+screenshots:
+  - description: A Sidebar displaying multiple locations.
+    path: art/screenshot.png
+
+topics:
+  - widget
+  - sidebar
+  - cupertino
+  - tabbar
 
 environment:
   sdk: ^3.5.3
