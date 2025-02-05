@@ -1,5 +1,4 @@
 import 'package:cupertino_sidebar/cupertino_sidebar.dart';
-import 'package:cupertino_sidebar/src/destination_info.dart';
 import 'package:flutter/cupertino.dart';
 
 /// A iOS-style sidebar.
@@ -93,12 +92,13 @@ import 'package:flutter/cupertino.dart';
 class CupertinoSidebar extends StatefulWidget {
   /// Creates a iOS-style [CupertinoSidebar].
   const CupertinoSidebar({
+    required this.title,
     required this.children,
     super.key,
-    this.navigationBar,
+    this.leading,
+    this.trailing,
     this.padding = const EdgeInsets.symmetric(horizontal: 16),
     this.backgroundColor,
-    this.border,
     this.maxWidth = 320,
     this.isVibrant = false,
     this.selectedIndex,
@@ -111,22 +111,20 @@ class CupertinoSidebar extends StatefulWidget {
   /// Defaults to [CupertinoMaterialStyle.regular].
   final CupertinoMaterialStyle? materialStyle;
 
-  /// A sliver widget displayed at the top of the sidebar.
-  ///
-  /// Typically a [SidebarNavigationBar] for a consistent iOS navigation bar
-  /// appearance.
-  final Widget? navigationBar;
+  /// The title of the navigation bar.
+  final Widget title;
+
+  /// The leading widget of the navigation bar.
+  final Widget? leading;
+
+  /// The trailing widget of the navigation bar.
+  final Widget? trailing;
 
   /// The sidebar's background color.
   ///
   /// Defaults to [CupertinoColors.systemBackground]. When [isVibrant]
   /// is `true`, the background color is overridden with a translucent material.
   final Color? backgroundColor;
-
-  /// The border applied to the sidebar.
-  ///
-  /// If `null`, a default border appears on the right side.
-  final Border? border;
 
   /// The maximum width of the sidebar.
   ///
@@ -181,52 +179,17 @@ class _CupertinoSidebarState extends State<CupertinoSidebar> {
     super.dispose();
   }
 
-  Widget? _buildNavigationBar() {
-    final navBar = widget.navigationBar;
-
-    if (navBar is SidebarNavigationBar && navBar.scrollController == null) {
-      // Wrap with scroll controller
-      return SidebarNavigationBar(
-        scrollController: _scrollController,
-        title: navBar.title,
-        leading: navBar.leading,
-        trailing: navBar.trailing,
-      );
-    }
-    return navBar;
-  }
-
-  int _countDestinations(List<Widget> children) {
-    return children.fold<int>(0, (count, child) {
-      if (child is SidebarDestination) return count + 1;
-      if (child is SidebarSectionDestination) {
-        return count + 1 + _countDestinations(child.children);
-      }
-      if (child is SidebarSection) {
-        return count + _countDestinations(child.children);
-      }
-      return count;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
-    final backgroundColor = widget.backgroundColor ??
-        CupertinoColors.systemBackground.resolveFrom(context);
-
-    final borderColor = CupertinoColors.separator.resolveFrom(context);
-
+    final backgroundColor = widget.backgroundColor ?? CupertinoColors.systemBackground.resolveFrom(context);
     final totalNumberOfDestinations = _countDestinations(widget.children);
-
     var destinationIndex = 0;
 
     Widget wrapChild(Widget child, int index) {
       return CupertinoDestinationInfo(
         index: index,
         selectedIndex: widget.selectedIndex ?? -1,
-        onPressed: () {
-          widget.onDestinationSelected?.call(index);
-        },
+        onPressed: () => widget.onDestinationSelected?.call(index),
         totalNumberOfDestinations: totalNumberOfDestinations,
         child: child,
       );
@@ -262,11 +225,8 @@ class _CupertinoSidebarState extends State<CupertinoSidebar> {
           wrappedChildren.add(child);
         }
       }
-
       return wrappedChildren;
     }
-
-    final wrappedChildren = wrapChildren(widget.children);
 
     return ConstrainedBox(
       constraints: BoxConstraints(
@@ -275,27 +235,32 @@ class _CupertinoSidebarState extends State<CupertinoSidebar> {
       child: CupertinoMaterial(
         style: widget.materialStyle ?? CupertinoMaterialStyle.regular,
         isActive: widget.isVibrant,
-        child: Container(
+        child: DecoratedBox(
           decoration: BoxDecoration(
             color: widget.isVibrant ? const Color(0x00000000) : backgroundColor,
-            border: widget.border ??
-                Border(
-                  right: BorderSide(
-                    color: borderColor,
-                    width: 0.5,
-                  ),
-                ),
+            border: Border(
+              right: BorderSide(
+                color: CupertinoColors.separator.resolveFrom(context),
+                width: 0.5,
+              ),
+            ),
           ),
           child: SafeArea(
             bottom: false,
             child: CustomScrollView(
               controller: _scrollController,
               slivers: [
-                if (widget.navigationBar != null) _buildNavigationBar()!,
+                SidebarNavigationBar(
+                  scrollController: _scrollController,
+                  color: widget.backgroundColor,
+                  title: widget.title,
+                  leading: widget.leading,
+                  trailing: widget.trailing,
+                ),
                 SliverPadding(
                   padding: widget.padding,
                   sliver: SliverList.list(
-                    children: wrappedChildren,
+                    children: wrapChildren(widget.children),
                   ),
                 ),
               ],
@@ -304,5 +269,14 @@ class _CupertinoSidebarState extends State<CupertinoSidebar> {
         ),
       ),
     );
+  }
+
+  int _countDestinations(List<Widget> children) {
+    return children.fold<int>(0, (count, child) {
+      if (child is SidebarDestination) return count + 1;
+      if (child is SidebarSectionDestination) return count + 1 + _countDestinations(child.children);
+      if (child is SidebarSection) return count + _countDestinations(child.children);
+      return count;
+    });
   }
 }

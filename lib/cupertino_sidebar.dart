@@ -7,7 +7,7 @@
 /// - [CupertinoSidebar] a sidebar that appears on the leading side of a view.
 /// - [CupertinoFloatingTabBar] a floating tab bar that appears on the
 ///  top of a view.
-library cupertino_sidebar;
+library;
 
 export 'src/collapsible.dart';
 export 'src/cupertino_material.dart';

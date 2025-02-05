@@ -1,5 +1,4 @@
 import 'package:cupertino_sidebar/cupertino_sidebar.dart';
-import 'package:cupertino_sidebar/src/destination_info.dart';
 import 'package:flutter/cupertino.dart';
 
 /// A [WidgetStateColor] that provides the fill color for a [CupertinoSidebar]
@@ -94,9 +93,8 @@ class SidebarDestination extends StatelessWidget {
     super.key,
     this.isSelected,
     this.icon,
-    this.selectedIcon,
+    this.iconColor,
     this.trailing,
-    this.subtitle,
     this.onTap,
   });
 
@@ -107,22 +105,12 @@ class SidebarDestination extends StatelessWidget {
   final bool? isSelected;
 
   /// The icon to display before the label.
-  final Widget? icon;
+  final IconData? icon;
 
-  /// The icon displayed before the label when the destination is selected.
-  ///
-  /// If [selectedIcon] is `null`, [icon] will be used for both states.
-  final Widget? selectedIcon;
+  final Color? iconColor;
 
   /// The label to display.
-  ///
-  /// Typically a [Text].
-  final Widget label;
-
-  /// An optional subtitle displayed below the [label].
-  ///
-  /// Typically a [Text].
-  final Widget? subtitle;
+  final String label;
 
   /// The callback invoked when the destination is tapped.
   ///
@@ -142,16 +130,10 @@ class SidebarDestination extends StatelessWidget {
     // Determine selection state, prioritizing explicit [isSelected] or sidebar
     // context.
     final selectedState = <WidgetState>{
-      if ((isSelected ?? false) || (info?.isSelected ?? false))
-        WidgetState.selected,
+      if ((isSelected ?? false) || (info?.isSelected ?? false)) WidgetState.selected,
     };
 
     bool selected() => selectedState.contains(WidgetState.selected);
-
-    final primary = CupertinoTheme.of(context).primaryColor;
-
-    // Display the appropriate icon based on the selection state.
-    final effectiveIcon = selected() ? selectedIcon ?? icon : icon;
 
     final typography = CupertinoTheme.of(context).textTheme;
 
@@ -166,14 +148,7 @@ class SidebarDestination extends StatelessWidget {
       color: CupertinoColors.secondaryLabel.resolveFrom(context),
     );
 
-    final effectiveSubtitleTextStyle = typography.textStyle.copyWith(
-      fontSize: 13,
-      letterSpacing: -0.08,
-      color: CupertinoColors.secondaryLabel.resolveFrom(context),
-    );
-
-    final effectiveBackgroundColor =
-        CupertinoSidebarFillColor(context).resolve(selectedState);
+    final effectiveBackgroundColor = CupertinoSidebarFillColor(context).resolve(selectedState);
 
     // Accessibility label for screen readers.
 
@@ -199,7 +174,7 @@ class SidebarDestination extends StatelessWidget {
             boxShadow: [
               if (selected())
                 BoxShadow(
-                  color: CupertinoColors.black.withOpacity(0.06),
+                  color: CupertinoColors.black.withValues(alpha: 0.06),
                   blurRadius: 16,
                   offset: const Offset(0, 4),
                 ),
@@ -209,35 +184,29 @@ class SidebarDestination extends StatelessWidget {
             padding: const EdgeInsets.all(8),
             child: Row(
               children: [
-                if (effectiveIcon != null)
+                if (icon != null)
                   Padding(
                     padding: const EdgeInsets.only(right: 10),
-                    child: IconTheme(
-                      data: IconThemeData(color: primary),
-                      child: effectiveIcon,
+                    child: Container(
+                      width: 28,
+                      height: 28,
+                      decoration: BoxDecoration(
+                        color: iconColor ?? CupertinoTheme.of(context).primaryColor,
+                        borderRadius: BorderRadius.circular(6),
+                      ),
+                      child: Center(
+                        child: Icon(
+                          icon,
+                          size: 17,
+                          color: const Color(0xFFFFFFFF),
+                        ),
+                      ),
                     ),
                   ),
-                if (subtitle == null)
-                  DefaultTextStyle(
-                    style: effectiveTextStyle,
-                    child: label,
-                  ),
-                if (subtitle != null)
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      DefaultTextStyle(
-                        style: effectiveTextStyle,
-                        child: label,
-                      ),
-                      // TODO: Adjust padding if needed for subtitle alignment.
-                      DefaultTextStyle(
-                        style: effectiveSubtitleTextStyle,
-                        child: subtitle!,
-                      ),
-                    ],
-                  ),
+                DefaultTextStyle(
+                  style: effectiveTextStyle,
+                  child: Text(label),
+                ),
                 const Spacer(),
                 if (trailing != null)
                   DefaultTextStyle(
@@ -250,5 +219,53 @@ class SidebarDestination extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+/// A widget that provides information about the destination in a
+/// [CupertinoSidebar] or [CupertinoFloatingTabBar].
+class CupertinoDestinationInfo extends InheritedWidget {
+  /// Creates a [CupertinoDestinationInfo] widget.
+  const CupertinoDestinationInfo({
+    required super.child,
+    required this.index,
+    required this.selectedIndex,
+    required this.totalNumberOfDestinations,
+    required this.onPressed,
+    super.key,
+  });
+
+  /// The index of this destination.
+  final int index;
+
+  /// The index of the currently selected destination.
+  final int selectedIndex;
+
+  /// The total number of destinations.
+  ///
+  /// Used for semantics.
+  final int totalNumberOfDestinations;
+
+  /// The callback that is called when this destination is pressed.
+  final VoidCallback onPressed;
+
+  /// Whether this destination is selected.
+  bool get isSelected => index == selectedIndex;
+
+  /// The [CupertinoDestinationInfo] from the closest [BuildContext].
+  static CupertinoDestinationInfo? maybeOf(BuildContext context) {
+    return context.dependOnInheritedWidgetOfExactType<CupertinoDestinationInfo>();
+  }
+
+  /// The [CupertinoDestinationInfo] from the closest [BuildContext].
+  static CupertinoDestinationInfo of(BuildContext context) {
+    final result = maybeOf(context);
+    assert(result != null, 'No SidebarDestinationInfo found in context');
+    return result!;
+  }
+
+  @override
+  bool updateShouldNotify(covariant CupertinoDestinationInfo oldWidget) {
+    return index != oldWidget.index || totalNumberOfDestinations != oldWidget.totalNumberOfDestinations || onPressed != oldWidget.onPressed;
   }
 }

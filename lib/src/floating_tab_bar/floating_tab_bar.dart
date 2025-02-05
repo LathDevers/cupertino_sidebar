@@ -1,4 +1,4 @@
-import 'package:cupertino_sidebar/cupertino_sidebar.dart';
+import 'package:cupertino_sidebar/src/cupertino_material.dart';
 import 'package:cupertino_sidebar/src/destination_info.dart';
 import 'package:cupertino_sidebar/src/util/conditional_builder.dart';
 import 'package:flutter/cupertino.dart';
@@ -112,8 +112,7 @@ class CupertinoFloatingTabBar extends StatefulWidget {
   final CupertinoMaterialStyle? materialStyle;
 
   @override
-  State<CupertinoFloatingTabBar> createState() =>
-      _CupertinoFloatingTabBarState();
+  State<CupertinoFloatingTabBar> createState() => _CupertinoFloatingTabBarState();
 }
 
 class _CupertinoFloatingTabBarState extends State<CupertinoFloatingTabBar> {
@@ -191,9 +190,7 @@ class _CupertinoFloatingTabBarState extends State<CupertinoFloatingTabBar> {
           listenable: _controller,
           buildWhen: () {
             // Avoid unnecessary rebuilding
-            return (index == _controller.index ||
-                    index == _controller.previousIndex) &&
-                _controller.indexIsChanging;
+            return (index == _controller.index || index == _controller.previousIndex) && _controller.indexIsChanging;
           },
           builder: (context, child) {
             return CupertinoDestinationInfo(
@@ -231,17 +228,14 @@ class _CupertinoFloatingTabBarState extends State<CupertinoFloatingTabBar> {
       color: kFloatingTabBarPillColor.resolveFrom(context),
       boxShadow: [
         BoxShadow(
-          color: CupertinoColors.black.withOpacity(0.08),
+          color: CupertinoColors.black.withValues(alpha: 0.08),
           blurRadius: 16,
           offset: const Offset(0, 2),
         ),
       ],
     );
 
-    final effectiveBackgroundColor = widget.isVibrant
-        ? const Color(0x00000000)
-        : widget.backgroundColor ??
-            CupertinoColors.tertiarySystemFill.resolveFrom(context);
+    final effectiveBackgroundColor = widget.isVibrant ? const Color(0x00000000) : widget.backgroundColor ?? CupertinoColors.tertiarySystemFill.resolveFrom(context);
 
     return ClipRRect(
       borderRadius: widget.borderRadius,
@@ -341,8 +335,7 @@ class _PositionBuilderState extends State<_PositionBuilder> {
   double getPosition(double index) {
     var position = 0.0;
     final wholeIndex = index.floor(); // Get the integer part of the index
-    final fractionalIndex =
-        index - wholeIndex; // Get the fractional part of the index
+    final fractionalIndex = index - wholeIndex; // Get the fractional part of the index
 
     // Add up the widths of the widgets up to the whole index
     for (var i = 0; i < wholeIndex && i < _widths.length; i++) {
@@ -374,8 +367,7 @@ class _PositionBuilderState extends State<_PositionBuilder> {
           return widget.controller.indexIsChanging;
         },
         builder: (context, child) {
-          final width =
-              _widths.isNotEmpty ? _widths[widget.controller.index] : 0.0;
+          final width = _widths.isNotEmpty ? _widths[widget.controller.index] : 0.0;
 
           if (width == 0) return const SizedBox();
 
@@ -409,8 +401,7 @@ class _PressIn extends StatefulWidget {
   State<_PressIn> createState() => __PressInState();
 }
 
-class __PressInState extends State<_PressIn>
-    with SingleTickerProviderStateMixin {
+class __PressInState extends State<_PressIn> with SingleTickerProviderStateMixin {
   late AnimationController _controller;
 
   @override

@@ -18,9 +18,7 @@ class SidebarSectionDestination extends StatefulWidget {
     super.key,
     this.isSelected,
     this.icon,
-    this.selectedIcon,
     this.trailing,
-    this.subtitle,
     this.onTap,
     this.onExpand,
     this.isExpanded,
@@ -36,8 +34,6 @@ class SidebarSectionDestination extends StatefulWidget {
     return SidebarSectionDestination(
       label: destination.label,
       icon: destination.icon,
-      selectedIcon: destination.selectedIcon,
-      subtitle: destination.subtitle,
       trailing: destination.trailing,
       onTap: destination.onTap,
       onExpand: destination.onExpand,
@@ -54,20 +50,12 @@ class SidebarSectionDestination extends StatefulWidget {
   final bool? isSelected;
 
   /// The icon to display before the label.
-  final Widget? icon;
-
-  /// The icon to display before the label when this destination is selected.
-  final Widget? selectedIcon;
+  final IconData? icon;
 
   /// The label to display.
   ///
   /// Typically a [Text].
-  final Widget label;
-
-  /// The subtitle to display below the label.
-  ///
-  /// Typically a [Text].
-  final Widget? subtitle;
+  final String label;
 
   /// Called when the destination is tapped.
   ///
@@ -99,8 +87,7 @@ class SidebarSectionDestination extends StatefulWidget {
   final void Function({bool isExpanded})? onExpand;
 
   @override
-  State<SidebarSectionDestination> createState() =>
-      _SidebarSectionDestinationState();
+  State<SidebarSectionDestination> createState() => _SidebarSectionDestinationState();
 }
 
 class _SidebarSectionDestinationState extends State<SidebarSectionDestination> {
@@ -117,8 +104,6 @@ class _SidebarSectionDestinationState extends State<SidebarSectionDestination> {
           icon: widget.icon,
           isSelected: widget.isSelected,
           onTap: widget.onTap,
-          selectedIcon: widget.selectedIcon,
-          subtitle: widget.subtitle,
           trailing: CupertinoButton(
             minSize: 0,
             padding: EdgeInsets.zero,

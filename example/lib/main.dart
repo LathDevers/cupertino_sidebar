@@ -50,38 +50,36 @@ class _SidebarExampleState extends State<SidebarExample> {
                 _selectedIndex = value;
               });
             },
-            navigationBar: const SidebarNavigationBar(
-              title: Text('Sidebar'),
-            ),
+            title: const Text('Sidebar'),
             children: const [
               // index 0
               SidebarDestination(
-                icon: Icon(CupertinoIcons.home),
-                label: Text('Home'),
+                icon: CupertinoIcons.home,
+                label: 'Home',
               ),
               // index 1
               SidebarDestination(
-                icon: Icon(CupertinoIcons.person),
-                label: Text('Items'),
+                icon: CupertinoIcons.person,
+                label: 'Items',
               ),
               // index 2
               SidebarDestination(
-                icon: Icon(CupertinoIcons.search),
-                label: Text('Search'),
+                icon: CupertinoIcons.search,
+                label: 'Search',
               ),
               // index 3
               SidebarSection(
-                label: Text('My section'),
+                label: 'My section',
                 children: [
                   // index 4
                   SidebarDestination(
-                    icon: Icon(CupertinoIcons.settings),
-                    label: Text('Settings'),
+                    icon: CupertinoIcons.settings,
+                    label: 'Settings',
                   ),
                   // index 5
                   SidebarDestination(
-                    icon: Icon(CupertinoIcons.person),
-                    label: Text('Profile'),
+                    icon: CupertinoIcons.person,
+                    label: 'Profile',
                   ),
                   // A widget that is not a destination.
                   _AddTile(),
@@ -89,8 +87,8 @@ class _SidebarExampleState extends State<SidebarExample> {
               ),
               // index 6
               SidebarDestination(
-                icon: Icon(CupertinoIcons.mail),
-                label: Text('Messages'),
+                icon: CupertinoIcons.mail,
+                label: 'Messages',
               ),
             ],
           ),

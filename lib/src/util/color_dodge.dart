@@ -12,24 +12,13 @@ extension ColorBlending on Color {
   /// increases the brightness
   /// of the bottom layer.
   Color colorDodge(Color other) {
-    // Extract color components and normalize to 0-1 range
-    final baseR = red / 255.0;
-    final baseG = green / 255.0;
-    final baseB = blue / 255.0;
-    final baseA = alpha / 255.0;
-
-    final blendR = other.red / 255.0;
-    final blendG = other.green / 255.0;
-    final blendB = other.blue / 255.0;
-    final blendA = other.alpha / 255.0;
-
     // Color dodge formula implementation
-    final resultR = _dodgeComponent(baseR, blendR);
-    final resultG = _dodgeComponent(baseG, blendG);
-    final resultB = _dodgeComponent(baseB, blendB);
+    final resultR = _dodgeComponent(r, other.r);
+    final resultG = _dodgeComponent(g, other.g);
+    final resultB = _dodgeComponent(b, other.b);
 
     // Alpha compositing
-    final resultA = baseA + blendA - (baseA * blendA);
+    final resultA = a + other.a - (a * other.a);
 
     // Convert back to 0-255 range and create new color
     return Color.fromARGB(
@@ -47,24 +36,13 @@ extension ColorBlending on Color {
   /// if it's dark, Multiply is used. This creates contrast by darkening dark
   /// colors and lightening light colors.
   Color overlay(Color other) {
-    // Extract color components and normalize to 0-1 range
-    final baseR = red / 255.0;
-    final baseG = green / 255.0;
-    final baseB = blue / 255.0;
-    final baseA = alpha / 255.0;
-
-    final blendR = other.red / 255.0;
-    final blendG = other.green / 255.0;
-    final blendB = other.blue / 255.0;
-    final blendA = other.alpha / 255.0;
-
     // Overlay formula implementation
-    final resultR = _overlayComponent(baseR, blendR);
-    final resultG = _overlayComponent(baseG, blendG);
-    final resultB = _overlayComponent(baseB, blendB);
+    final resultR = _overlayComponent(r, other.r);
+    final resultG = _overlayComponent(g, other.g);
+    final resultB = _overlayComponent(b, other.b);
 
     // Alpha compositing
-    final double resultA = min(baseA, blendA);
+    final double resultA = min(a, other.a);
 
     // Convert back to 0-255 range and create new color
     return Color.fromARGB(
@@ -99,9 +77,9 @@ extension ColorBlending on Color {
   Color withOpacity(double opacity) {
     return Color.fromARGB(
       (opacity * 255).round(),
-      red,
-      green,
-      blue,
+      (r * 255).round(),
+      (g * 255).round(),
+      (b * 255).round(),
     );
   }
 }

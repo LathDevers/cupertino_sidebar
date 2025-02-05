@@ -8,7 +8,6 @@ import 'package:flutter/cupertino.dart';
 /// [SidebarSection]s can be expanded to reveal more destinations.
 /// Although [SidebarSection] does not act as a destination itself.
 class SidebarSection extends StatefulWidget {
-  //// Creates a [SidebarSection].
   const SidebarSection({
     required this.label,
     required this.children,
@@ -16,7 +15,6 @@ class SidebarSection extends StatefulWidget {
     this.isExpanded,
     this.onPressed,
     this.trailing,
-    this.sectionPadding,
   });
 
   /// Creates a copy of [section], but replaces its children with [children].
@@ -28,16 +26,13 @@ class SidebarSection extends StatefulWidget {
       label: section.label,
       isExpanded: section.isExpanded,
       onPressed: section.onPressed,
-      sectionPadding: section.sectionPadding,
       trailing: section.trailing,
       children: children,
     );
   }
 
   /// The label for the section.
-  ///
-  /// Typically a [Text] widget.
-  final Widget label;
+  final String label;
 
   /// The widget to display after the [label].
   ///
@@ -55,9 +50,6 @@ class SidebarSection extends StatefulWidget {
   /// If this is null, the expansion state will be managed internally.
   final bool? isExpanded;
 
-  /// The padding to indent the [children].
-  final EdgeInsets? sectionPadding;
-
   /// Called when the section is pressed.
   ///
   /// If this is null, the expansion state will be managed internally.
@@ -71,11 +63,11 @@ class _SidebarSectionState extends State<SidebarSection> {
   bool _isExpanded = true;
   @override
   Widget build(BuildContext context) {
-    final sectionStyle =
-        CupertinoTheme.of(context).textTheme.textStyle.copyWith(
-              fontWeight: FontWeight.w600,
-              color: CupertinoColors.secondaryLabel.resolveFrom(context),
-            );
+    final sectionStyle = CupertinoTheme.of(context).textTheme.textStyle.copyWith(
+          fontWeight: FontWeight.w600,
+          color: CupertinoColors.secondaryLabel.resolveFrom(context),
+          fontSize: 18,
+        );
 
     final border = widget.isExpanded ?? _isExpanded
         ? BorderSide.none
@@ -86,47 +78,43 @@ class _SidebarSectionState extends State<SidebarSection> {
     return Semantics(
       expanded: widget.isExpanded ?? _isExpanded,
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 9),
+        padding: const EdgeInsets.symmetric(vertical: 9),
         child: Column(
           children: [
-            DecoratedBox(
-              decoration: BoxDecoration(
-                border: Border(bottom: border),
-              ),
-              child: CupertinoButton(
-                padding: EdgeInsets.zero,
-                onPressed: () {
-                  if (widget.onPressed != null) {
-                    widget.onPressed!(isExpanded: !_isExpanded);
-                  } else {
-                    // Manage state internally.
-                    setState(() {
-                      _isExpanded = !_isExpanded;
-                    });
-                  }
-                },
-                child: Row(
-                  children: [
-                    DefaultTextStyle(
-                      style: sectionStyle,
-                      child: widget.label,
-                    ),
-                    const Spacer(),
-                    widget.trailing ??
-                        CupertinoAnimatedChevron(
-                          isExpanded: widget.isExpanded ?? _isExpanded,
-                        ),
-                  ],
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8),
+              child: DecoratedBox(
+                decoration: BoxDecoration(
+                  border: Border(bottom: border),
+                ),
+                child: CupertinoButton(
+                  padding: EdgeInsets.zero,
+                  onPressed: () {
+                    if (widget.onPressed != null)
+                      widget.onPressed!(isExpanded: !_isExpanded);
+                    else
+                      setState(() => _isExpanded = !_isExpanded);
+                  },
+                  child: Row(
+                    children: [
+                      DefaultTextStyle(
+                        style: sectionStyle,
+                        child: Text(widget.label),
+                      ),
+                      const Spacer(),
+                      widget.trailing ??
+                          CupertinoAnimatedChevron(
+                            isExpanded: widget.isExpanded ?? _isExpanded,
+                          ),
+                    ],
+                  ),
                 ),
               ),
             ),
             CupertinoCollapsible(
               isExpanded: widget.isExpanded ?? _isExpanded,
-              child: Padding(
-                padding: widget.sectionPadding ?? EdgeInsets.zero,
-                child: Column(
-                  children: widget.children,
-                ),
+              child: Column(
+                children: widget.children,
               ),
             ),
           ],

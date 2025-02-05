@@ -7,8 +7,7 @@ class CollapsibleSidebarExample extends StatefulWidget {
   const CollapsibleSidebarExample({super.key});
 
   @override
-  State<CollapsibleSidebarExample> createState() =>
-      _CollapsibleSidebarExampleState();
+  State<CollapsibleSidebarExample> createState() => _CollapsibleSidebarExampleState();
 }
 
 class _CollapsibleSidebarExampleState extends State<CollapsibleSidebarExample> {
@@ -43,32 +42,30 @@ class _CollapsibleSidebarExampleState extends State<CollapsibleSidebarExample> {
                       _selectedIndex = value;
                     });
                   },
-                  navigationBar: const SidebarNavigationBar(
-                    title: Text('Sidebar'),
-                  ),
+                  title: const Text('Sidebar'),
                   children: const [
                     SidebarDestination(
-                      icon: Icon(CupertinoIcons.home),
-                      label: Text('Home'),
+                      icon: CupertinoIcons.home,
+                      label: 'Home',
                     ),
                     SidebarDestination(
-                      icon: Icon(CupertinoIcons.person),
-                      label: Text('Items'),
+                      icon: CupertinoIcons.person,
+                      label: 'Items',
                     ),
                     SidebarDestination(
-                      icon: Icon(CupertinoIcons.search),
-                      label: Text('Search'),
+                      icon: CupertinoIcons.search,
+                      label: 'Search',
                     ),
                     SidebarSection(
-                      label: Text('My section'),
+                      label: 'My section',
                       children: [
                         SidebarDestination(
-                          icon: Icon(CupertinoIcons.settings),
-                          label: Text('Settings'),
+                          icon: CupertinoIcons.settings,
+                          label: 'Settings',
                         ),
                         SidebarDestination(
-                          icon: Icon(CupertinoIcons.person),
-                          label: Text('Profile'),
+                          icon: CupertinoIcons.person,
+                          label: 'Profile',
                         ),
                         // A widget that is not a destination.
                       ],
