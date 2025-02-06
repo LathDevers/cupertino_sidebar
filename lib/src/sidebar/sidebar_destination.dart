@@ -1,5 +1,6 @@
 import 'package:cupertino_sidebar/cupertino_sidebar.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 /// A [WidgetStateColor] that provides the fill color for a [CupertinoSidebar]
 /// destination.
@@ -93,7 +94,7 @@ class SidebarDestination extends StatelessWidget {
     super.key,
     this.isSelected,
     this.icon,
-    this.iconColor,
+    this.iconColor = CupertinoColors.systemBlue,
     this.trailing,
     this.onTap,
   });
@@ -107,7 +108,7 @@ class SidebarDestination extends StatelessWidget {
   /// The icon to display before the label.
   final IconData? icon;
 
-  final Color? iconColor;
+  final Color iconColor;
 
   /// The label to display.
   final String label;
@@ -142,7 +143,9 @@ class SidebarDestination extends StatelessWidget {
             color: CupertinoSidebarTextColor(context).resolve(selectedState),
             fontWeight: FontWeight.w600,
           )
-        : typography.textStyle;
+        : typography.textStyle.copyWith(
+            color: Theme.of(context).colorScheme.primary,
+          );
 
     final effectiveDetailTextStyle = typography.textStyle.copyWith(
       color: CupertinoColors.secondaryLabel.resolveFrom(context),
@@ -191,7 +194,7 @@ class SidebarDestination extends StatelessWidget {
                       width: 28,
                       height: 28,
                       decoration: BoxDecoration(
-                        color: iconColor ?? CupertinoTheme.of(context).primaryColor,
+                        color: iconColor,
                         borderRadius: BorderRadius.circular(6),
                       ),
                       child: Center(

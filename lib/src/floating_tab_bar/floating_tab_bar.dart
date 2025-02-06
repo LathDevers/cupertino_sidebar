@@ -318,27 +318,23 @@ class _PositionBuilderState extends State<_PositionBuilder> {
   }
 
   void _updateWidths() {
-    SchedulerBinding.instance.addPostFrameCallback((_) {
-      setState(() {
-        _widths = _computeWidths();
-      });
-    });
+    SchedulerBinding.instance.addPostFrameCallback((_) => setState(() => _widths = _computeWidths()));
   }
 
   List<double> _computeWidths() {
     return widget.tabKeys.map((key) {
-      final box = key.currentContext?.findRenderObject() as RenderBox?;
+      final RenderBox? box = key.currentContext?.findRenderObject() as RenderBox?;
       return box?.size.width ?? 0.0;
     }).toList();
   }
 
   double getPosition(double index) {
-    var position = 0.0;
-    final wholeIndex = index.floor(); // Get the integer part of the index
-    final fractionalIndex = index - wholeIndex; // Get the fractional part of the index
+    double position = 0.0;
+    final int wholeIndex = index.floor(); // Get the integer part of the index
+    final double fractionalIndex = index - wholeIndex; // Get the fractional part of the index
 
     // Add up the widths of the widgets up to the whole index
-    for (var i = 0; i < wholeIndex && i < _widths.length; i++) {
+    for (int i = 0; i < wholeIndex && i < _widths.length; i++) {
       position += _widths[i];
     }
 
@@ -363,14 +359,10 @@ class _PositionBuilderState extends State<_PositionBuilder> {
       child: ConditionalListenableBuilder<TabController>(
         listenable: widget.controller,
         // Prevent rebuilding twice when the index changes
-        buildWhen: () {
-          return widget.controller.indexIsChanging;
-        },
+        buildWhen: () => widget.controller.indexIsChanging,
         builder: (context, child) {
           final width = _widths.isNotEmpty ? _widths[widget.controller.index] : 0.0;
-
           if (width == 0) return const SizedBox();
-
           return _PressIn(
             isPressed: widget.isDragging,
             child: AnimatedContainer(
@@ -415,11 +407,10 @@ class __PressInState extends State<_PressIn> with SingleTickerProviderStateMixin
   }
 
   void _listener() {
-    if (widget.isPressed.value) {
+    if (widget.isPressed.value)
       _controller.forward();
-    } else {
+    else
       _controller.reverse();
-    }
   }
 
   @override

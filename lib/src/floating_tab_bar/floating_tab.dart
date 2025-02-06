@@ -13,11 +13,9 @@ class CupertinoFloatingTabBarColor extends WidgetStateColor {
 
   @override
   Color resolve(Set<WidgetState> states) {
-    final primary = CupertinoTheme.of(context).primaryColor;
-
     if (states.contains(WidgetState.selected)) {
       return CupertinoDynamicColor.withBrightness(
-        color: primary,
+        color: CupertinoColors.systemBlue,
         darkColor: CupertinoColors.white,
       ).resolveFrom(context);
     }
@@ -85,19 +83,17 @@ class CupertinoFloatingTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final info = CupertinoDestinationInfo.maybeOf(context);
+    final CupertinoDestinationInfo? info = CupertinoDestinationInfo.maybeOf(context);
 
-    final selectedState = <WidgetState>{
-      if ((isSelected ?? false) || (info?.isSelected ?? false))
-        WidgetState.selected,
+    final Set<WidgetState> selectedState = <WidgetState>{
+      if ((isSelected ?? false) || (info?.isSelected ?? false)) WidgetState.selected,
     };
 
-    final effectiveColor =
-        CupertinoFloatingTabBarColor(context).resolve(selectedState);
+    final Color effectiveColor = CupertinoFloatingTabBarColor(context).resolve(selectedState);
 
-    final localizations = CupertinoLocalizations.of(context);
+    final CupertinoLocalizations localizations = CupertinoLocalizations.of(context);
 
-    final semanticsLabel = info != null
+    final String? semanticsLabel = info != null
         ? localizations.tabSemanticsLabel(
             tabIndex: info.index + 1,
             tabCount: info.totalNumberOfDestinations,
@@ -112,9 +108,7 @@ class CupertinoFloatingTab extends StatelessWidget {
         height: 33,
         width: _isIcon ? 56 : null,
         child: Padding(
-          padding: _isIcon
-              ? EdgeInsets.zero
-              : const EdgeInsets.symmetric(horizontal: 14),
+          padding: _isIcon ? EdgeInsets.zero : const EdgeInsets.symmetric(horizontal: 14),
           child: Center(
             child: CupertinoButton(
               padding: EdgeInsets.zero,
@@ -122,9 +116,9 @@ class CupertinoFloatingTab extends StatelessWidget {
               child: DefaultTextStyle(
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  fontSize: 17,
+                  fontSize: selectedState.contains(WidgetState.selected) ? 17 : 15,
                   letterSpacing: -0.23,
-                  fontWeight: FontWeight.w600,
+                  fontWeight: selectedState.contains(WidgetState.selected) ? FontWeight.w700 : FontWeight.w500,
                   color: effectiveColor,
                 ),
                 child: IconTheme(
