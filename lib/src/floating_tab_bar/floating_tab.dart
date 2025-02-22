@@ -116,9 +116,9 @@ class CupertinoFloatingTab extends StatelessWidget {
               child: DefaultTextStyle(
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  fontSize: selectedState.contains(WidgetState.selected) ? 17 : 15,
+                  fontSize: 17, // TODO: selectedState.contains(WidgetState.selected) ? 17 : 15,
                   letterSpacing: -0.23,
-                  fontWeight: selectedState.contains(WidgetState.selected) ? FontWeight.w700 : FontWeight.w500,
+                  fontWeight: FontWeight.w700, // TODO: FontWeight.w500 if not selected
                   color: effectiveColor,
                 ),
                 child: IconTheme(
